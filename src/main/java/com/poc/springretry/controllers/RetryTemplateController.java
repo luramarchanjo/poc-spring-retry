@@ -11,6 +11,7 @@ import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.backoff.NoBackOffPolicy;
 import org.springframework.retry.backoff.UniformRandomBackOffPolicy;
 import org.springframework.retry.policy.AlwaysRetryPolicy;
+import org.springframework.retry.policy.CircuitBreakerRetryPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -97,6 +98,22 @@ public class RetryTemplateController {
     RetryTemplate retryTemplate = new RetryTemplate();
     retryTemplate.setBackOffPolicy(new FixedBackOffPolicy());
     retryTemplate.setRetryPolicy(new AlwaysRetryPolicy());
+
+    retryTemplate.execute(retryContext -> {
+      retryTemplateService.commad(command);
+      return null;
+    });
+
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/circuit-brake-test")
+  public ResponseEntity<?> testCircuitBreakerRetryPolicy(@RequestBody Command command) {
+    log.info("Received post request");
+
+    RetryTemplate retryTemplate = new RetryTemplate();
+    retryTemplate.setBackOffPolicy(new FixedBackOffPolicy());
+    retryTemplate.setRetryPolicy(new CircuitBreakerRetryPolicy());
 
     retryTemplate.execute(retryContext -> {
       retryTemplateService.commad(command);

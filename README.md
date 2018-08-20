@@ -22,12 +22,28 @@ This is a simple poc using [spring-retry]
 
 ## RetryTemplate
 
-* ExponentialBackOffPolicy
-* ExponentialRandomBackOffPolicy
-* FixedBackOffPolicy
-* NoBackOffPolicy
-* UniformRandomBackOffPolicy
-* StatelessBackOffPolicy
-* AlwaysRetryPolicy
+Testing BackOffPolicy & RetryPolicy
+
+### BackOffPolicy
+
+* [ExponentialBackOffPolicy]
+* [ExponentialRandomBackOffPolicy]
+* [FixedBackOffPolicy]
+* [NoBackOffPolicy]
+* [UniformRandomBackOffPolicy]
+* [StatelessBackOffPolicy]
+
+### RetryPolicy
+
+* [AlwaysRetryPolicy]
+* [CircuitBreakerRetryPolicy]
 
 [spring-retry]: https://docs.spring.io/spring-batch/trunk/reference/html/retry.html
+[ExponentialBackOffPolicy]: https://docs.spring.io/spring-retry/docs/1.1.2.RELEASE/apidocs/org/springframework/retry/backoff/ExponentialBackOffPolicy.html
+[ExponentialRandomBackOffPolicy]: https://docs.spring.io/spring-retry/docs/1.1.2.RELEASE/apidocs/org/springframework/retry/backoff/ExponentialRandomBackOffPolicy.html
+[FixedBackOffPolicy]: https://docs.spring.io/spring-retry/docs/1.1.2.RELEASE/apidocs/org/springframework/retry/backoff/FixedBackOffPolicy.html
+[NoBackOffPolicy]: https://docs.spring.io/spring-retry/docs/1.1.2.RELEASE/apidocs/org/springframework/retry/backoff/NoBackOffPolicy.html
+[UniformRandomBackOffPolicy]: https://docs.spring.io/spring-retry/docs/1.1.2.RELEASE/apidocs/org/springframework/retry/backoff/UniformRandomBackOffPolicy.html
+[StatelessBackOffPolicy]: https://docs.spring.io/spring-retry/docs/1.1.2.RELEASE/apidocs/org/springframework/retry/backoff/StatelessBackOffPolicy.html
+[AlwaysRetryPolicy]: https://docs.spring.io/spring-retry/docs/1.1.2.RELEASE/apidocs/org/springframework/retry/policy/AlwaysRetryPolicy.html
+[CircuitBreakerRetryPolicy]: https://docs.spring.io/spring-retry/docs/1.1.2.RELEASE/apidocs/org/springframework/retry/policy/CircuitBreakerRetryPolicy.html
