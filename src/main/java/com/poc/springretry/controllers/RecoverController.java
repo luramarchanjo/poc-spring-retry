@@ -1,7 +1,7 @@
 package com.poc.springretry.controllers;
 
 import com.poc.springretry.domain.Command;
-import com.poc.springretry.services.SimpleRetryService;
+import com.poc.springretry.services.RecoverService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/retry-test")
+@RequestMapping("/recover-test")
 @Slf4j
 @AllArgsConstructor
-public class SimpleRetryController {
+public class RecoverController {
 
-  private final SimpleRetryService simpleRetryService;
+  private final RecoverService recoverService;
 
   @PostMapping
   public ResponseEntity<?> post(@RequestBody Command command) {
     log.info("Received post request");
-    simpleRetryService.commad(command);
+    recoverService.commad(command);
     return ResponseEntity.ok().build();
   }
 
