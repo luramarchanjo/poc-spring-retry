@@ -27,5 +27,7 @@ This is a simple poc using [spring-retry]
 * FixedBackOffPolicy
 * NoBackOffPolicy
 * UniformRandomBackOffPolicy
+* StatelessBackOffPolicy
+* AlwaysRetryPolicy
 
 [spring-retry]: https://docs.spring.io/spring-batch/trunk/reference/html/retry.html

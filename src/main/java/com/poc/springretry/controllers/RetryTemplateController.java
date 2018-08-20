@@ -2,14 +2,15 @@ package com.poc.springretry.controllers;
 
 import com.poc.springretry.domain.Command;
 import com.poc.springretry.services.RetryTemplateService;
-import java.util.concurrent.TimeUnit;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.backoff.ExponentialRandomBackOffPolicy;
+import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.backoff.NoBackOffPolicy;
 import org.springframework.retry.backoff.UniformRandomBackOffPolicy;
+import org.springframework.retry.policy.AlwaysRetryPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,33 +25,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class RetryTemplateController {
 
   private final RetryTemplateService retryTemplateService;
-  private final RetryTemplate retryTemplate;
-
-  @PostMapping
-  public ResponseEntity<?> post(@RequestBody Command command) {
-    log.info("Received post request");
-
-    retryTemplate.execute(retryContext -> {
-      retryTemplateService.commad(command);
-      return null;
-    });
-
-    return ResponseEntity.ok().build();
-  }
 
   @PostMapping("/exponential-test")
   public ResponseEntity<?> testExponential(@RequestBody Command command) {
     log.info("Received post request");
 
-    ExponentialBackOffPolicy exponentialBackOffPolicy = new ExponentialBackOffPolicy();
-    exponentialBackOffPolicy.setInitialInterval(1000);
-
-    SimpleRetryPolicy simpleRetryPolicy = new SimpleRetryPolicy();
-    simpleRetryPolicy.setMaxAttempts(5);
-
     RetryTemplate retryTemplate = new RetryTemplate();
-    retryTemplate.setBackOffPolicy(exponentialBackOffPolicy);
-    retryTemplate.setRetryPolicy(simpleRetryPolicy);
+    retryTemplate.setBackOffPolicy(new ExponentialBackOffPolicy());
+    retryTemplate.setRetryPolicy(new SimpleRetryPolicy());
 
     retryTemplate.execute(retryContext -> {
       retryTemplateService.commad(command);
@@ -64,15 +46,9 @@ public class RetryTemplateController {
   public ResponseEntity<?> testExponentialRandom(@RequestBody Command command) {
     log.info("Received post request");
 
-    ExponentialRandomBackOffPolicy exponentialRandomBackOffPolicy = new ExponentialRandomBackOffPolicy();
-    exponentialRandomBackOffPolicy.setInitialInterval(1000);
-
-    SimpleRetryPolicy simpleRetryPolicy = new SimpleRetryPolicy();
-    simpleRetryPolicy.setMaxAttempts(5);
-
     RetryTemplate retryTemplate = new RetryTemplate();
-    retryTemplate.setBackOffPolicy(exponentialRandomBackOffPolicy);
-    retryTemplate.setRetryPolicy(simpleRetryPolicy);
+    retryTemplate.setBackOffPolicy(new ExponentialRandomBackOffPolicy());
+    retryTemplate.setRetryPolicy(new SimpleRetryPolicy());
 
     retryTemplate.execute(retryContext -> {
       retryTemplateService.commad(command);
@@ -86,14 +62,9 @@ public class RetryTemplateController {
   public ResponseEntity<?> testNoBackOffPolicy(@RequestBody Command command) {
     log.info("Received post request");
 
-    NoBackOffPolicy noBackOffPolicy = new NoBackOffPolicy();
-
-    SimpleRetryPolicy simpleRetryPolicy = new SimpleRetryPolicy();
-    simpleRetryPolicy.setMaxAttempts(5);
-
     RetryTemplate retryTemplate = new RetryTemplate();
-    retryTemplate.setBackOffPolicy(noBackOffPolicy);
-    retryTemplate.setRetryPolicy(simpleRetryPolicy);
+    retryTemplate.setBackOffPolicy(new NoBackOffPolicy());
+    retryTemplate.setRetryPolicy(new SimpleRetryPolicy());
 
     retryTemplate.execute(retryContext -> {
       retryTemplateService.commad(command);
@@ -107,14 +78,9 @@ public class RetryTemplateController {
   public ResponseEntity<?> testUniformRandomBackOffPolicy(@RequestBody Command command) {
     log.info("Received post request");
 
-    UniformRandomBackOffPolicy uniformRandomBackOffPolicy = new UniformRandomBackOffPolicy();
-
-    SimpleRetryPolicy simpleRetryPolicy = new SimpleRetryPolicy();
-    simpleRetryPolicy.setMaxAttempts(5);
-
     RetryTemplate retryTemplate = new RetryTemplate();
-    retryTemplate.setBackOffPolicy(uniformRandomBackOffPolicy);
-    retryTemplate.setRetryPolicy(simpleRetryPolicy);
+    retryTemplate.setBackOffPolicy(new UniformRandomBackOffPolicy());
+    retryTemplate.setRetryPolicy(new SimpleRetryPolicy());
 
     retryTemplate.execute(retryContext -> {
       retryTemplateService.commad(command);
@@ -124,6 +90,21 @@ public class RetryTemplateController {
     return ResponseEntity.ok().build();
   }
 
+  @PostMapping("/always-retry-test")
+  public ResponseEntity<?> testAlwaysRetryPolicy(@RequestBody Command command) {
+    log.info("Received post request");
+
+    RetryTemplate retryTemplate = new RetryTemplate();
+    retryTemplate.setBackOffPolicy(new FixedBackOffPolicy());
+    retryTemplate.setRetryPolicy(new AlwaysRetryPolicy());
+
+    retryTemplate.execute(retryContext -> {
+      retryTemplateService.commad(command);
+      return null;
+    });
+
+    return ResponseEntity.ok().build();
+  }
 
 
 }
