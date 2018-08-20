@@ -39,6 +39,7 @@ Testing BackOffPolicy & RetryPolicy
 * [CircuitBreakerRetryPolicy]
 * [CompositeRetryPolicy]
 * [ExceptionClassifierRetryPolicy]
+* [TimeoutRetryPolicy]
 
 [spring-retry]: https://docs.spring.io/spring-batch/trunk/reference/html/retry.html
 [ExponentialBackOffPolicy]: https://docs.spring.io/spring-retry/docs/1.1.2.RELEASE/apidocs/org/springframework/retry/backoff/ExponentialBackOffPolicy.html
@@ -51,3 +52,4 @@ Testing BackOffPolicy & RetryPolicy
 [CircuitBreakerRetryPolicy]: https://docs.spring.io/spring-retry/docs/1.1.2.RELEASE/apidocs/org/springframework/retry/policy/CircuitBreakerRetryPolicy.html
 [CompositeRetryPolicy]: https://docs.spring.io/spring-retry/docs/1.1.2.RELEASE/apidocs/org/springframework/retry/policy/CompositeRetryPolicy.html
 [ExceptionClassifierRetryPolicy]: https://docs.spring.io/spring-retry/docs/1.1.2.RELEASE/apidocs/org/springframework/retry/policy/ExceptionClassifierRetryPolicy.html
+[TimeoutRetryPolicy]: https://docs.spring.io/spring-retry/docs/1.1.2.RELEASE/apidocs/org/springframework/retry/policy/TimeoutRetryPolicy.html

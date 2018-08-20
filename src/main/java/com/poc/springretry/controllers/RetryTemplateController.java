@@ -2,6 +2,7 @@ package com.poc.springretry.controllers;
 
 import com.poc.springretry.domain.Command;
 import com.poc.springretry.services.RetryTemplateService;
+import java.util.concurrent.TimeUnit;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.retry.policy.CircuitBreakerRetryPolicy;
 import org.springframework.retry.policy.CompositeRetryPolicy;
 import org.springframework.retry.policy.ExceptionClassifierRetryPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
+import org.springframework.retry.policy.TimeoutRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -148,6 +150,25 @@ public class RetryTemplateController {
     RetryTemplate retryTemplate = new RetryTemplate();
     retryTemplate.setBackOffPolicy(new FixedBackOffPolicy());
     retryTemplate.setRetryPolicy(new ExceptionClassifierRetryPolicy());
+
+    retryTemplate.execute(retryContext -> {
+      retryTemplateService.commad(command);
+      return null;
+    });
+
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/timeout-test")
+  public ResponseEntity<?> testTimeoutRetryPolicy(@RequestBody Command command) {
+    log.info("Received post request");
+
+    TimeoutRetryPolicy timeoutRetryPolicy = new TimeoutRetryPolicy();
+    timeoutRetryPolicy.setTimeout(TimeUnit.SECONDS.toMillis(10));
+
+    RetryTemplate retryTemplate = new RetryTemplate();
+    retryTemplate.setBackOffPolicy(new FixedBackOffPolicy());
+    retryTemplate.setRetryPolicy(timeoutRetryPolicy);
 
     retryTemplate.execute(retryContext -> {
       retryTemplateService.commad(command);
