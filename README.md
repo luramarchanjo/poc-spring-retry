@@ -6,7 +6,7 @@ This is a simple poc using [spring-retry]
 
 * Simple retry with @Retryable
 * Simple retry with @Recover
-* Simple retry withe RetryTemplate, RetryPolicy and BackOffPolicy
+* Simple retry with RetryTemplate, RetryPolicy and BackOffPolicy
 
 ## Retryable
 
