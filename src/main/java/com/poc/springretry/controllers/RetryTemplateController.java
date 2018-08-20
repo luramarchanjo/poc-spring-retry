@@ -13,6 +13,7 @@ import org.springframework.retry.backoff.UniformRandomBackOffPolicy;
 import org.springframework.retry.policy.AlwaysRetryPolicy;
 import org.springframework.retry.policy.CircuitBreakerRetryPolicy;
 import org.springframework.retry.policy.CompositeRetryPolicy;
+import org.springframework.retry.policy.ExceptionClassifierRetryPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -140,5 +141,20 @@ public class RetryTemplateController {
     return ResponseEntity.ok().build();
   }
 
+  @PostMapping("/exception-classifier-test")
+  public ResponseEntity<?> testExceptionClassifierRetryPolicy(@RequestBody Command command) {
+    log.info("Received post request");
+
+    RetryTemplate retryTemplate = new RetryTemplate();
+    retryTemplate.setBackOffPolicy(new FixedBackOffPolicy());
+    retryTemplate.setRetryPolicy(new ExceptionClassifierRetryPolicy());
+
+    retryTemplate.execute(retryContext -> {
+      retryTemplateService.commad(command);
+      return null;
+    });
+
+    return ResponseEntity.ok().build();
+  }
 
 }
